@@ -1,90 +1,73 @@
-# Challenge Intuit FRONT
+# React + TypeScript + Vite
 
-  
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-SPA en react y vite usando npx create-vite-app@latest para coding challenge de la empresa Intuit Salud / Yappa. Por Pablo Clavijo
+Currently, two official plugins are available:
 
-  
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
----
+## React Compiler
 
-  
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Tecnologías
+## Expanding the ESLint configuration
 
-  
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-- .React
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-- Vite
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-- Shadcn para componentes
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-- Tailwind CSS
-- Tanstack Query para fetching y mutaciones
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-- React-hook-form para formularios
-- -Toastify para toasts
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-  
-
----
-
-  
-
-## Estructura del proyecto
-
-  
-
-IntuitFront/src
-
-├──Hooks/ hook useClient para manejar la interacción con servicios
-
-├── lib/ inicialización del cliente para interactuar con la api y utils
-
-├── services/ interacción propiamente dicha
-
-├── types/ todos los tipos
-
-├── components/ elementos de la ui de shadcn y modales propios
-
-App.tsx 
-
-
-  
-  
-
----
-
-  
-
-## Configuración mínima
-
-  
-
-### 1. .ENV
-
-  
-
-crear archivo .env y pasarle la dirección del backend
-
-    VITE_API_BASE_URL=https://localhost:7277/api
-
-
-## Funcionalidades
-
- - Grilla con todos los clientes
- - Creación de clientes
- - Modificación
- - Eliminado
- - Búsqueda por nombre, apellido, nombre y apellido o substring de éstos desde el backend
-
-  
-
-## Cómo correr
-
- 
-
-    cd intuitfront
-    npm install
-    npm run dev
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
